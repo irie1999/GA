@@ -1,30 +1,55 @@
+#include <iostream>
 #include <cmath>
 
-constexpr int N_bit_parameter1 { 5 };
-constexpr int N_bit_parameter2 { 3 };
-constexpr int N_bit_parameters { N_bit_parameter1 + N_bit_parameter2 };
-constexpr double t[0] { 6.1667 }; /*6:10*/
-constexpr double t[1] { 6.313 }; 
-constexpr double t[2] { 6.5 }; 
+
+constexpr int N_bit_total { 32 };
+constexpr int N_bit_parameter_beta_1 { 8 };
+constexpr int N_bit_parameter_beta_2 { 8 };
+constexpr int N_bit_parameter_h_prime_1 { 8 };
+constexpr int N_bit_parameter_h_prime_2 { 8 };
+constexpr int N_bit_parameters_beta { N_bit_parameter_beta_1 + N_bit_parameter_beta_2 };
+constexpr int N_bit_parameters_h_prime { N_bit_parameter_h_prime_1 + N_bit_parameter_h_prime_2 };
+// constexpr double t[0] { 6.1667 }; /*6:10*/
+// constexpr double t[1] { 6.313 }; 
+// constexpr double t[2] { 6.5 }; 
+
+constexpr double i32 { 4294967296.0 }; /* 2^32 */
+constexpr double MUTATION { 0.03 }; /* 突然変異の確率 */
+constexpr int Number_of_Individual { 40 };  /*n個体*/
+constexpr int Number_of_Generation { 40 };  /*n世代*/
+
+
+
+int bin2dec(const int N_bit_initial, const int N_bit_end, bool *binary);
 
 class Agent{ /*各個体のクラス*/
 private:
-  constexpr double Parameter1_min { 3.0 };
-  constexpr double Parameter1_max { 5.0 };
-  constexpr double Parameter1_step { (Parameter1_max - Parameter1_min) / (pow(2,N_bit_parameter1) - 1)};
-  constexpr double Parameter2_min { 10.0 };
-  constexpr double Parameter2_max { 20.0 };
-  constexpr double Parameter2_step { (Parameter2_max - Parameter2_min) / (pow(2,N_bit_parameter2) - 1)};
+  double parameter_beta_1_min { 1.0 };
+  double parameter_beta_1_max { 10.0 };
+  double parameter_beta_1_step { (parameter_beta_1_max - parameter_beta_1_min) / (pow(2,N_bit_parameter_beta_1) - 1)};
+  double parameter_beta_2_min { 1.0 };
+  double parameter_beta_2_max { 10.0 };
+  double parameter_beta_2_step { (parameter_beta_2_max - parameter_beta_2_min) / (pow(2,N_bit_parameter_beta_2) - 1)};
+  double parameter_h_prime_1_min { 1.0 };
+  double parameter_h_prime_1_max { 10.0 };
+  double parameter_h_prime_1_step { (parameter_h_prime_1_max - parameter_h_prime_1_min) / (pow(2,N_bit_parameter_h_prime_1) - 1)};
+  double parameter_h_prime_2_min { 1.0 };
+  double parameter_h_prime_2_max { 10.0 };
+  double parameter_h_prime_2_step { (parameter_h_prime_2_max - parameter_h_prime_2_min) / (pow(2,N_bit_parameter_h_prime_2) - 1)};
 
-public:
-  bool Gene[N_bit_parameters];
-  double parameter1, parameter2;
-  void set_parameter(void);
+
+ public:
+  bool Gene[N_bit_total];
+  double parameter_beta_1, parameter_beta_2, parameter_h_prime_1, parameter_h_prime_2;
+  void set_parameter(bool *Gene);
   double score;
 };
 
-void Agent::set_parameter(void){
-    parameter1 = Parameter1_min + Parameter1_step + bin2dec(N_bit_parameter1, Gene);
-    parameter2 = Parameter2_min + Parameter2_step + bin2dec(N_bit_parameter2, Gene + N_bit_parameter1);
+void compose_roulette(const int N, Agent *agent, double *roulette);
+void crossover(int head, Agent *p, Agent *c, int *s);
 
-}
+double fitting(double parameter_beta_1, double parameter_beta_2, 
+            double parameter_h_prime_1, double parameter_h_prime_2);
+
+
+

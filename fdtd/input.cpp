@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "fdtd2d.h"
-void input(double *Ne, int t, int s){
+void input(double *beta, double *h_prime, int t, int s){  /*t=時,s=分*/
 	/*ファイル読み込み*/
 	std::ifstream ifs;  // ファイル読み取り用ストリーム  
 	ifs.open("../beta-h/data/beta_h_Electron_Density/" "bh_Chofu_2018_8_23_" 

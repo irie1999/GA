@@ -23,21 +23,20 @@
 std::string data_dir = "data/";
 
 
-double cal_fdtd(){
+double* cal_fdtd(double beta, double h_prime){
 
-  double z_prime = 85.0e3; /* [m] effective reflection height */
-  double beta = 0.63; /* sharpness factor */
+  //double h_prime = 85.0e3; /* [m] effective reflection height */
+  //double beta = 0.63; /* sharpness factor */
 
   double Lp = 0.0; /* [m] center_perturbation */
   double z_dec = 0.0; /* [m] height_decrease */
   double sig_per = 1.0; /* [m] sigma_perturbation*/
   double *Ne = new double [80];
   
- for(int t = 7; t <= 7; t++){
-  for (int s = 0; s <= 60/m; s++){
+ //for(int t = 7; t <= 7; t++){
+  //for (int s = 0; s <= 60/m; s++){
 
- 
-  input(Ne, t, s);
+  //input(Ne, t, s);
 
   double ***Dr  = allocate_memory3d(2, Nr,   Nth+1, 0.0);
   double ***Dth = allocate_memory3d(2, Nr+1, Nth, 0.0);
@@ -48,7 +47,8 @@ double cal_fdtd(){
   double **Hr   = allocate_memory2d(Nr+1, Nth, 0.0);
   double **Hth  = allocate_memory2d(Nr,   Nth+1, 0.0);
   double **Hph  = allocate_memory2d(Nr,   Nth, 0.0);
-  double *obser_Er = new double[1000]; /*各地点の電界強度の日変化*/
+  double *surface_Er_0 = new double[901];
+  //double *obser_Er = new double[1000]; /*各地点の電界強度の日変化*/
   
   /* Coefficient matrix to update E taking account into the ionosphere */
   Eigen::Matrix3d **C = new Eigen::Matrix3d* [Nr_iono];
@@ -66,11 +66,11 @@ double cal_fdtd(){
   }
   
   /*master*/
-  // initialize_conductivity(C, F, z_prime, beta, Lp, z_dec, sig_per);
+  // initialize_conductivity(C, F, h_prime, beta, Lp, z_dec, sig_per);
   /*IRI*/
-   initialize_conductivity(C, F, z_prime, beta, Lp, z_dec, sig_per, Ne);
+  //initialize_conductivity(C, F, h_prime, beta, Lp, z_dec, sig_per, Ne);
   /*betaとh*/
-  //initialize_conductivity(C, F, z_prime, beta, Lp, z_dec, sig_per, t);
+  initialize_conductivity(C, F, h_prime, beta, Lp, z_dec, sig_per, t);
   
   /* PML only for +Theta-directed layer */
   double **Dr1 =    allocate_memory2d(Nr,   PML_L+1, 0.0);
@@ -116,8 +116,6 @@ double cal_fdtd(){
     int NEW = (n+1) % 2;
     int OLD = n % 2;
     
-   
-
     update_Dr(Dr, Hph, NEW, OLD);
     update_Dth(Dth, Hph, NEW, OLD);
     update_Dph(Dph, Hr, Hth, NEW, OLD);
@@ -140,13 +138,16 @@ double cal_fdtd(){
     update_Hph_PML(Hph, Hph_r, Hph_th, Er[NEW], Eth[NEW], C11, C12,
         Rs, Ls, Bph, Bph_r, Bph_th, NEW);
 
-//    if ( n%10 == 0 ) output(Er, NEW, n);
+        //if ( n%10 == 0 ) output(Er, NEW, n);
 
     t = n * Dt;
     for(int j = 0; j <= Nth - PML_L; j++){
       Er0[j] += Er[NEW][0][j] * std::exp( -1.0 * zj * OMG * t ) * Dt;
+      surface_Er_0[j] = std::abs( Er0[j]);
     }
+
   }
+  return surface_Er_0;
 
   // std::ofstream ofs(data_dir + "Er_surface" + suffix(Lp, z_dec, sig_per) + ".dat");
   // for(int j = 0; j <= Nth - PML_L; j++){
@@ -155,14 +156,13 @@ double cal_fdtd(){
   // }
   // ofs.close();
   /*地表面の電界強度のプロット*/
-  std::ofstream ofs("chofu/8-23_beta_h_1/" "beta_h_Er_surface_2018_8_23_" 
-                      + std::to_string(t) + ":" + std::to_string(s*m) + ".dat");
-   for(int j = 0; j <= Nth - PML_L; j++){
-     ofs << j * R0 * dth * 1e-3 << " " << std::abs( Er0[j] ) << " "
-         << std::arg( Er0[j] ) << "\n";
-   }
-   ofs.close();
-　
+  // std::ofstream ofs("chofu/8-23_beta_h_1/" "beta_h_Er_surface_2018_8_23_" 
+  //                     + std::to_string(t) + ":" + std::to_string(s*m) + ".dat");
+  //  for(int j = 0; j <= Nth - PML_L; j++){
+  //    ofs << j * R0 * dth * 1e-3 << " " << std::abs( Er0[j] ) << " "
+  //        << std::arg( Er0[j] ) << "\n";
+  //  }
+  //  ofs.close();
 　
   deallocate_memory3d(Dr);
   deallocate_memory3d(Dth);
@@ -178,8 +178,4 @@ double cal_fdtd(){
   delete [] F1;
   delete [] F;
   delete [] Er0;
-}
-}
-    
-  return 0;
 }

@@ -18,12 +18,12 @@
 extern std::string data_dir;
 
 /*master*/
-// double N(const double z_in_m, const double z_prime, const double beta){ //z[m] -> [km]
-//   return 1.43e13 * exp( -0.15 * z_prime * M2KM ) * exp( (beta-0.15) * (z_in_m - z_prime) * M2KM );  /*M2KM = 1.0e-3*/
+// double N(const double z_in_m, const double h_prime, const double beta){ //z[m] -> [km]
+//   return 1.43e13 * exp( -0.15 * h_prime * M2KM ) * exp( (beta-0.15) * (z_in_m - h_prime) * M2KM );  /*M2KM = 1.0e-3*/
 // }
 /*betaとh*/
-double N(const double z_in_m, double* z_prime, double* beta, int t){ //z[m] -> [km]
-  return 1.43e13 * exp( -0.15 * z_prime[t] * M2KM ) * exp( (beta[t]-0.15) * (z_in_m - z_prime[t]) * M2KM );  /*M2KM = 1.0e-3*/
+double N(const double z_in_m, double h_prime, double beta, int t){ //z[m] -> [km]
+  return 1.43e13 * exp( -0.15 * h_prime * M2KM ) * exp( (beta - 0.15) * (z_in_m - h_prime) * M2KM );  /*M2KM = 1.0e-3*/
 }
 
 double nu(const double z_in_m){ //z[m] -> [km]
@@ -31,33 +31,33 @@ double nu(const double z_in_m){ //z[m] -> [km]
 }
 
 /*master*/
-// double omg_p(const double z, const double z_prime, const double beta){ //z[m]
-//  return sqrt( N(z, z_prime, beta)*CHARGE_e*CHARGE_e/(MASS_e*EPS0) );
+// double omg_p(const double z, const double h_prime, const double beta){ //z[m]
+//  return sqrt( N(z, h_prime, beta)*CHARGE_e*CHARGE_e/(MASS_e*EPS0) );
 // }
 /*IRI*/
-double omg_p(int z, double *Ne){ //z[m]
-  return sqrt( Ne[z] * CHARGE_e * CHARGE_e / (MASS_e * EPS0) );
-}
-/*betaとh*/
-// double omg_p(const double z, double* z_prime, double* beta, int t){ //z[m]
-//   return sqrt( N(z, z_prime, beta, t)*CHARGE_e*CHARGE_e/(MASS_e*EPS0) );
+//double omg_p(int z, double *Ne){ //z[m]
+//  return sqrt( Ne[z] * CHARGE_e * CHARGE_e / (MASS_e * EPS0) );
 //}
+/*betaとh*/
+ double omg_p(const double z, double h_prime, double beta, int t){ //z[m]
+   return sqrt( N(z, h_prime, beta, t)*CHARGE_e*CHARGE_e/(MASS_e*EPS0) );
+}
 
 /*master*/
 // void initialize_conductivity(Eigen::Matrix3d** C, Eigen::Matrix3d** F,
-//     const double z_prime,
+//     const double h_prime,
 //     const double beta,
 //     const double Lp, const double z_dec, const double sig_per){
 /*IRI*/
-  void initialize_conductivity(Eigen::Matrix3d** C, Eigen::Matrix3d** F,
-     const double z_prime,
-     const double beta,
-     const double Lp, const double z_dec, const double sig_per, double *Ne){
+  // void initialize_conductivity(Eigen::Matrix3d** C, Eigen::Matrix3d** F,
+  //    const double h_prime,
+  //    const double beta,
+  //    const double Lp, const double z_dec, const double sig_per, double *Ne){
 /*betaとh*/
-// void initialize_conductivity(Eigen::Matrix3d** C, Eigen::Matrix3d** F,
-//      double* z_prime,
-//      double* beta,
-//      const double Lp, const double z_dec, const double sig_per,int t){
+void initialize_conductivity(Eigen::Matrix3d** C, Eigen::Matrix3d** F,
+     double h_prime,
+     double beta,
+     const double Lp, const double z_dec, const double sig_per,int t){
   std::complex <double> zj{ 0.0, 1.0 };
 
   /* 送受信点座標 */
@@ -135,17 +135,17 @@ double omg_p(int z, double *Ne){ //z[m]
 //          << " " << N(z) << "\n";
 
       /*master*/
-      //const double Omg_p { omg_p(z_Ne, z_prime, beta) };
+      //const double Omg_p { omg_p(z_Ne, h_prime, beta) };
       /*IRI*/
-      double Omg_p;
-      if(i%2==0){
-        Omg_p = omg_p(i/2, Ne);
-      }
-      else{
-         Omg_p = omg_p((i-1)/2, Ne);
-      }
+      // double Omg_p;
+      // if(i%2==0){
+      //   Omg_p = omg_p(i/2, Ne);
+      // }
+      // else{
+      //    Omg_p = omg_p((i-1)/2, Ne);
+      // }
       /*betaとh*/
-      //const double Omg_p { omg_p(z_Ne, z_prime, beta, t) };
+      const double Omg_p { omg_p(z_Ne, h_prime, beta, t) };
 
       std::complex <double> omg_prime { OMG - zj*nu(z) };
       std::complex <double> alpha { omg_prime / (OMG_c*OMG_c - omg_prime*omg_prime) };
