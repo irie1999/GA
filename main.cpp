@@ -5,6 +5,7 @@
 #include "GA.h"
 
 int main(void){
+
     std::mt19937 rnd(1);
     double max, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
 
