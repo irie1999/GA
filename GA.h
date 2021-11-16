@@ -2,11 +2,11 @@
 #include <cmath>
 
 
-constexpr int N_bit_total { 16 };
-constexpr int N_bit_parameter_beta_1 { 4 };
-constexpr int N_bit_parameter_beta_2 { 4 };
-constexpr int N_bit_parameter_h_prime_1 { 4 };
-constexpr int N_bit_parameter_h_prime_2 { 4 };
+constexpr int N_bit_total { 12 };
+constexpr int N_bit_parameter_beta_1 { 3 };
+constexpr int N_bit_parameter_beta_2 { 3 };
+constexpr int N_bit_parameter_h_prime_1 { 3 };
+constexpr int N_bit_parameter_h_prime_2 { 3 };
 constexpr int N_bit_parameters_beta { N_bit_parameter_beta_1 + N_bit_parameter_beta_2 };
 constexpr int N_bit_parameters_h_prime { N_bit_parameter_h_prime_1 + N_bit_parameter_h_prime_2 };
 // constexpr double t[0] { 6.1667 }; /*6:10*/
@@ -14,10 +14,10 @@ constexpr int N_bit_parameters_h_prime { N_bit_parameter_h_prime_1 + N_bit_param
 // constexpr double t[2] { 6.5 }; 
 
 constexpr double i32 { 4294967296.0 }; /* 2^32 */
-constexpr double MUTATION { 0.03 }; /* 突然変異の確率 */
-constexpr int Number_of_Individual { 20 };  /*n個体*/
-//constexpr int Number_of_Generation { 3 };  /*n世代*/
-constexpr int Max_Generation { 60 };
+constexpr double MUTATION { 0.05 }; /* 突然変異の確率 */
+constexpr int Number_of_Individual { 60 };  /*n個体*/
+constexpr int Number_of_Generation { 60 };  /*n世代*/
+//constexpr int Max_Generation { 120 };
 
 
 

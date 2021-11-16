@@ -7,12 +7,14 @@
 
 int main(void){
     
-    std::mt19937 rnd(1);
-    double max, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
-    double MAX[Max_Generation + 10];
- for(int Number_of_Generation = 1; Number_of_Generation < Max_Generation; Number_of_Generation++){
-    Agent agent[2][Number_of_Individual];
-    
+     //std::random_device rnd;
+     //std::mt19937 mt(rnd());
+    std::mt19937 rnd(1); 
+
+    double max, max_1, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
+    double MAX[Number_of_Generation + 10];
+      Agent agent[2][Number_of_Individual];
+
     /*初期ランダム遺伝子の作成*/
     for(int i = 0; i < Number_of_Individual; i++){
         for(int n = 0; n < N_bit_total; n++){
@@ -26,12 +28,22 @@ int main(void){
         const int CHILD { (n_generation + 1) % 2};
 
         for(int i = 0; i < Number_of_Individual; i++){
+            max_1 = -1.0;
             agent[PARENT][i].set_parameter(agent[PARENT][i].Gene);  /* 2進数から10進数に変換*/
             
             agent[PARENT][i].score
                     = fitting( agent[PARENT][i].parameter_beta_1, agent[PARENT][i].parameter_beta_2,
                             agent[PARENT][i].parameter_h_prime_1, agent[PARENT][i].parameter_h_prime_2); 
                     /*FDTDの計算,返値がスコア*/
+
+            if( max_1 <= agent[PARENT][i].score){
+                max_1 = agent[PARENT][i].score;
+                max_beta_1 = agent[PARENT][i].parameter_beta_1;
+                max_beta_2 = agent[PARENT][i].parameter_beta_2;
+                max_h_prime_1 = agent[PARENT][i].parameter_h_prime_1;
+                max_h_prime_2 = agent[PARENT][i].parameter_h_prime_2;
+            }
+            MAX[n_generation] = max_1;
         }
         
         //std::cout << " beta_1 = " << agent[PARENT][0].parameter_beta_1 << " beta_2 = " << agent[PARENT][0].parameter_beta_2 
@@ -49,10 +61,18 @@ int main(void){
                 double rnd_num = rnd() / i32;
                 int k = 0;
                 while( roulette[k] < rnd_num){  /*親を2体選ぶルーレット*/
+                //std::cout << "k= " << k << " " << roulette[k] << " " << rnd_num << std::endl;
                     k++;
                 }
+                //std::cout << "k= " << k <<" " << roulette[k] << " " << rnd_num << std::endl; 
                 sict[j] = k;
+                //roulette[k] = 0;
+                //std::cout << "k= " << k << std::endl;
+                //std::cout << "sict[" << j << "]= " << sict[j] << std::endl << std::endl; 
             }
+            // if(sict[0] == sict[1]){ /*選ばれた親が同じである場合*/
+
+            // }
             crossover(i, agent[PARENT], agent[CHILD], sict); /*交叉*/
         }
         
@@ -66,7 +86,10 @@ int main(void){
                 }
             }
         }
+        
     }
+
+
     
     
     /*最終世代の最もスコアが高いものを判断*/
@@ -88,13 +111,10 @@ int main(void){
                 max_h_prime_2 = agent[PARENT][i].parameter_h_prime_2;
             }
     }
-    MAX[Number_of_Generation] = max;
-    
- }
 
  std::ofstream ofs("../data/" "score_graph");
- for(int Number_of_Generation = 1; Number_of_Generation < Max_Generation; Number_of_Generation++){
-     ofs << Number_of_Generation << " " << MAX[Number_of_Generation] << std::endl;
+ for(int n_generation = 0; n_generation < Number_of_Generation; n_generation++){
+     ofs << n_generation << " " << MAX[n_generation] << std::endl;
  }
 
     std::cout << "beta_1= " << max_beta_1 << std::endl 
