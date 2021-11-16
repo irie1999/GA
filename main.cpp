@@ -1,16 +1,18 @@
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <random>
 
 #include "GA.h"
 
 int main(void){
-
+    
     std::mt19937 rnd(1);
     double max, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
-
+    double MAX[Max_Generation + 10];
+ for(int Number_of_Generation = 1; Number_of_Generation < Max_Generation; Number_of_Generation++){
     Agent agent[2][Number_of_Individual];
-
+    
     /*初期ランダム遺伝子の作成*/
     for(int i = 0; i < Number_of_Individual; i++){
         for(int n = 0; n < N_bit_total; n++){
@@ -31,13 +33,15 @@ int main(void){
                             agent[PARENT][i].parameter_h_prime_1, agent[PARENT][i].parameter_h_prime_2); 
                     /*FDTDの計算,返値がスコア*/
         }
+        
         //std::cout << " beta_1 = " << agent[PARENT][0].parameter_beta_1 << " beta_2 = " << agent[PARENT][0].parameter_beta_2 
                   //<< " h_prime_1 = " << agent[PARENT][0].parameter_h_prime_1 << " h_prime_2 = " << agent[PARENT][0].parameter_h_prime_2 <<  std::endl; 
 
         /*ルーレット作成*/
         double *roulette = new double[Number_of_Individual];
         compose_roulette(Number_of_Individual, agent[PARENT], roulette);
-
+        
+        
         /*選択と交叉*/
         for(int i = 0; i < Number_of_Individual; i+=2){
             int sict[2];
@@ -51,6 +55,8 @@ int main(void){
             }
             crossover(i, agent[PARENT], agent[CHILD], sict); /*交叉*/
         }
+        
+        
 
         /*突然変異*/
         for(int i = 0; i < Number_of_Individual; i++){
@@ -62,9 +68,10 @@ int main(void){
         }
     }
     
+    
     /*最終世代の最もスコアが高いものを判断*/
     const int PARENT { Number_of_Generation % 2 };
-    //const int CHILD { (Number_of_Generation + 1) % 2};
+    
     max = agent[PARENT][0].score;
 
     for(int i = 0; i < Number_of_Individual; i++){
@@ -81,6 +88,14 @@ int main(void){
                 max_h_prime_2 = agent[PARENT][i].parameter_h_prime_2;
             }
     }
+    MAX[Number_of_Generation] = max;
+    
+ }
+
+ std::ofstream ofs("../data/" "score_graph");
+ for(int Number_of_Generation = 1; Number_of_Generation < Max_Generation; Number_of_Generation++){
+     ofs << Number_of_Generation << " " << MAX[Number_of_Generation] << std::endl;
+ }
 
     std::cout << "beta_1= " << max_beta_1 << std::endl 
               << "beta_2= " << max_beta_2 << std::endl

@@ -39,6 +39,7 @@ void compose_roulette(const int N, Agent *agent, double *roulette){/*ルーレ�
 
     for(int i = 0; i < Number_of_Individual; i++){
         sum += agent[i].score;
+        std::cout << "agent[i].score= " << agent[i].score << std::endl;
     }    
     roulette[0] = agent[0].score / sum;
 
