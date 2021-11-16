@@ -14,9 +14,7 @@ int main(void){
     for(int i = 0; i < Number_of_Individual; i++){
         for(int n = 0; n < N_bit_total; n++){
             agent[0][i].Gene[n] = rnd() % 2;
-            //std::cout << agent[0][i].Gene[n] << " ";
         }
-        //std::cout << std::endl;
     }
     
 
@@ -36,7 +34,7 @@ int main(void){
                   //<< " h_prime_1 = " << agent[PARENT][0].parameter_h_prime_1 << " h_prime_2 = " << agent[PARENT][0].parameter_h_prime_2 <<  std::endl; 
 
         /*ルーレット作成*/
-        double roulette[Number_of_Individual];
+        double *roulette = new double[Number_of_Individual];
         compose_roulette(Number_of_Individual, agent[PARENT], roulette);
 
         /*選択と交叉*/
@@ -45,7 +43,7 @@ int main(void){
             for(int j = 0; j <2 ; j++){
                 double rnd_num = rnd() / i32;
                 int k = 0;
-                while( roulette[k] < rnd_num){
+                while( roulette[k] < rnd_num){  /*親を2体選ぶルーレット*/
                     k++;
                 }
                 sict[j] = k;
