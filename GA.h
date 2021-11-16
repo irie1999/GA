@@ -17,7 +17,7 @@ constexpr double i32 { 4294967296.0 }; /* 2^32 */
 constexpr double MUTATION { 0.03 }; /* 突然変異の確率 */
 constexpr int Number_of_Individual { 20 };  /*n個体*/
 constexpr int Number_of_Generation { 20 };  /*n世代*/
-constexpr int Max_Generation { 50 };
+//constexpr int Max_Generation { 50 };
 
 
 

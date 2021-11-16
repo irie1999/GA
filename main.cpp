@@ -10,7 +10,7 @@ int main(void){
     std::mt19937 rnd(1);
     double max, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
     double MAX[Max_Generation + 10];
- for(int Number_of_Generation = 1; Number_of_Generation < Max_Generation; Number_of_Generation++){
+ 
     Agent agent[2][Number_of_Individual];
     
     /*初期ランダム遺伝子の作成*/
@@ -89,13 +89,9 @@ int main(void){
             }
     }
     MAX[Number_of_Generation] = max;
-    
- }
 
- std::ofstream ofs("../data/" "score_graph");
- for(int Number_of_Generation = 1; Number_of_Generation < Max_Generation; Number_of_Generation++){
-     ofs << Number_of_Generation << " " << MAX[Number_of_Generation] << std::endl;
- }
+
+ 
 
     std::cout << "beta_1= " << max_beta_1 << std::endl 
               << "beta_2= " << max_beta_2 << std::endl
