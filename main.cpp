@@ -6,14 +6,12 @@
 #include "GA.h"
 
 int main(void){
-    
-     //std::random_device rnd;
-     //std::mt19937 mt(rnd());
+
      std::mt19937 rnd(1); 
 
     double max, max_1, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
-    double MAX[Number_of_Generation + 10];
-    double score_average[Number_of_Generation + 10];
+    double MAX[Number_of_Generation + 1];
+    double score_average[Number_of_Generation + 1];
       Agent agent[2][Number_of_Individual];
 
     /*初期ランダム遺伝子の作成*/

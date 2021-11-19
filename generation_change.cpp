@@ -7,9 +7,6 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     double v; /*score*/
      double u_beta_1 = 11.0, u_beta_2 = 10.0;
      double u_h_prime_1 = 6.0, u_h_prime_2 = 9.0;
-    // double beta[3], h_prime[3];
-    // beta[0] = 0.49366;
-    // h_prime[0] = 77.69128;
 
     // for(int t = 0; t <= 2; t++){
     //     beta[t] = parameter_beta_2 * pow((t[t] - t[0]), 2) + parameter_beta_1 * (t[t] - t[0]) + beta[0];
@@ -17,11 +14,10 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
         
     //     cal_fdtd(beta[t], h_prime[t]); /*betaとh'を代入して電界を返す*/
     // }
+    
      v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
              - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
 
-    
-    
     // for(int i = 0; i < Nr; i++){
     //     for(int m = 1; m < M; m++){
     //         v += 1/ (Nr * (M - 1)) * std::pow(std::abs( S[i][m] - s[i][m] ), 2)
