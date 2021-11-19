@@ -1,4 +1,5 @@
 data/
+fdtd/
 *.o
 *.for
 *.dat
@@ -7,5 +8,6 @@ data/
 fort.7
 main
 00readme.txt
-fdtd/
+
+
 
