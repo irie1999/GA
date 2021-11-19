@@ -5,8 +5,8 @@
 double fitting(double parameter_beta_1, double parameter_beta_2, 
             double parameter_h_prime_1, double parameter_h_prime_2){
     double v; /*score*/
-     double u_beta_1 = 5.0, u_beta_2 = 3.0;
-     double u_h_prime_1 = 2.0, u_h_prime_2 = 1.0;
+     double u_beta_1 = 11.0, u_beta_2 = 10.0;
+     double u_h_prime_1 = 6.0, u_h_prime_2 = 9.0;
     // double beta[3], h_prime[3];
     // beta[0] = 0.49366;
     // h_prime[0] = 77.69128;
@@ -17,12 +17,10 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
         
     //     cal_fdtd(beta[t], h_prime[t]); /*betaとh'を代入して電界を返す*/
     // }
+     v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
+             - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
 
-    // v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
-    //         - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
-
-    v = 100 - std::abs(parameter_beta_1 - u_beta_1) - std::abs(parameter_beta_2 - u_beta_2) - std::abs(parameter_h_prime_1 - u_h_prime_1)
-         - std::abs(parameter_h_prime_2 - u_h_prime_2);
+    
     
     // for(int i = 0; i < Nr; i++){
     //     for(int m = 1; m < M; m++){
@@ -37,17 +35,16 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     return v;
 }
 
-void compose_roulette(const int N, Agent *agent, double *roulette){/*ルーレット作成*/
+void compose_roulette(const int N, Agent *agent, double *roulette, double *score_average, int n_generation){/*ルーレット作成*/
     double sum = 0.0; 
-    double sum_1 = 0.0;
 
     for(int i = 0; i < Number_of_Individual; i++){
         sum += agent[i].score;
         //std::cout << "agent[" << i << "].score= " << agent[i].score << std::endl;
     }    
-    sum_1 = sum / Number_of_Individual;
-    std::cout << "sum_average= " << sum_1 << std::endl;
-    std::cout << std::endl;
+    score_average[n_generation] = sum / Number_of_Individual;
+    //std::cout << "sum_average= " << sum_1 << std::endl;
+    //std::cout << std::endl;
     //std::cout << "sum= " << sum << std::endl;
     roulette[0] = agent[0].score / sum;
       //std::cout << "roulette[0]= " << roulette[0] << std::endl;
