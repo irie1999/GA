@@ -6,8 +6,15 @@
 #include "GA.h"
 
 int main(void){
+<<<<<<< HEAD
 
      std::mt19937 rnd(1); 
+=======
+    
+    //  std::random_device rnd;
+    //  std::mt19937 mt(rnd());
+    std::mt19937 rnd(1); 
+>>>>>>> score_graph
 
     double max, max_1, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
     double MAX[Number_of_Generation + 1];
@@ -18,8 +25,11 @@ int main(void){
     for(int i = 0; i < Number_of_Individual; i++){
         for(int n = 0; n < N_bit_total; n++){
             agent[0][i].Gene[n] = rnd() % 2;
+            //std::cout << agent[0][i].Gene[n] << " "; 
         }
+        //std::cout << std::endl;
     }
+    
     
 
     for(int n_generation = 0; n_generation < Number_of_Generation; n_generation++){
@@ -29,7 +39,7 @@ int main(void){
         for(int i = 0; i < Number_of_Individual; i++){
             
             agent[PARENT][i].set_parameter(agent[PARENT][i].Gene);  /* 2進数から10進数に変換*/
-            
+
             agent[PARENT][i].score
                     = fitting( agent[PARENT][i].parameter_beta_1, agent[PARENT][i].parameter_beta_2,
                             agent[PARENT][i].parameter_h_prime_1, agent[PARENT][i].parameter_h_prime_2); 
@@ -46,13 +56,14 @@ int main(void){
         }
         MAX[n_generation] = max_1;
         
-        //std::cout << " beta_1 = " << agent[PARENT][0].parameter_beta_1 << " beta_2 = " << agent[PARENT][0].parameter_beta_2 
-                  //<< " h_prime_1 = " << agent[PARENT][0].parameter_h_prime_1 << " h_prime_2 = " << agent[PARENT][0].parameter_h_prime_2 <<  std::endl; 
+        
+        // std::cout << " beta_1 = " << max_beta_1 << " beta_2 = " << max_beta_2 
+        //           << " h_prime_1 = " << max_h_prime_1 << " h_prime_2 = " << max_h_prime_2
+        //           << " score= " << max_1 <<  std::endl; 
 
         /*ルーレット作成*/
-        double *roulette = new double[Number_of_Individual];
-        compose_roulette(Number_of_Individual, agent[PARENT], roulette, score_average, n_generation);
-        
+        double roulette[Number_of_Individual];
+        compose_roulette(Number_of_Individual, agent[PARENT], roulette, score_average, n_generation);    
         
         /*選択と交叉*/
         for(int i = 0; i < Number_of_Individual; i+=2){
@@ -66,13 +77,13 @@ int main(void){
                 }
                 //std::cout << "k= " << k <<" " << roulette[k] << " " << rnd_num << std::endl; 
                 sict[j] = k;
-                
                 //std::cout << "k= " << k << std::endl;
                 //std::cout << "sict[" << j << "]= " << sict[j] << std::endl << std::endl; 
             }
             
             crossover(i, agent[PARENT], agent[CHILD], sict); /*交叉*/
         }
+        
         
         
 
@@ -117,10 +128,8 @@ int main(void){
      ofs << n_generation << " " << MAX[n_generation] << " " << score_average[n_generation] << std::endl;
  }
 
-    std::cout << "beta_1= " << max_beta_1 << std::endl 
-              << "beta_2= " << max_beta_2 << std::endl
-              << "h_prime_1= " << max_h_prime_1 << std::endl 
-              << "h_prime_2= " << max_h_prime_2 << std::endl;
+    std::cout << "beta_1= " << max_beta_1 << " beta_2= " << max_beta_2  << " h_prime_1= " << max_h_prime_1  
+              << " h_prime_2= " << max_h_prime_2 << " max= " << max << std::endl;
 
     return 0;
 
