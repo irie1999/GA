@@ -5,8 +5,8 @@
 double fitting(double parameter_beta_1, double parameter_beta_2, 
             double parameter_h_prime_1, double parameter_h_prime_2){
     double v; /*score*/
-     double u_beta_1 = 11.0, u_beta_2 = 10.0;
-     double u_h_prime_1 = 6.0, u_h_prime_2 = 9.0;
+     double u_beta_1 = 1.0, u_beta_2 = 1.0;
+     double u_h_prime_1 = 1.0, u_h_prime_2 = 1.0;
     // double beta[3], h_prime[3];
     // beta[0] = 0.49366;
     // h_prime[0] = 77.69128;
@@ -50,12 +50,14 @@ void compose_roulette(const int N, Agent *agent, double *roulette, double *score
       //std::cout << "roulette[0]= " << roulette[0] << std::endl;
       for(int i = 1; i < Number_of_Individual ; i++){
         roulette[i] = roulette[i-1] + agent[i].score / sum;
-        //std::cout << "roulette[" << i << "]= " << roulette[i] << std::endl;
+        // std::cout << "roulette[" << 3 << "]= " << roulette[3] << std::endl;
     }
 }
 
 void crossover(int head, Agent *p, Agent *c, int *s){ /*交叉*/
-  std::mt19937 rnd(1); 
+  //std::mt19937 rnd(1); 
+  std::random_device rnd;
+  std::mt19937 mt(rnd());
 
     for(int i = 0; i < N_bit_total; i++){
         if(rnd() / i32 < 0.5){  /*入れ替えなし*/  
