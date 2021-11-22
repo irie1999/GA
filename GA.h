@@ -25,20 +25,6 @@ int bin2dec(const int N_bit_initial, const int N_bit_end, bool *binary);
 
 class Agent{ /*各個体のクラス*/
 private:
-<<<<<<< HEAD
-  // double parameter_beta_1_min { 1.0 };
-  // double parameter_beta_1_max { 10.0 };
-  // double parameter_beta_1_step { (parameter_beta_1_max - parameter_beta_1_min) / (pow(2,N_bit_parameter_beta_1) - 1)};
-  // double parameter_beta_2_min { 1.0 };
-  // double parameter_beta_2_max { 10.0 };
-  // double parameter_beta_2_step { (parameter_beta_2_max - parameter_beta_2_min) / (pow(2,N_bit_parameter_beta_2) - 1)};
-  // double parameter_h_prime_1_min { 1.0 };
-  // double parameter_h_prime_1_max { 10.0 };
-  // double parameter_h_prime_1_step { (parameter_h_prime_1_max - parameter_h_prime_1_min) / (pow(2,N_bit_parameter_h_prime_1) - 1)};
-  // double parameter_h_prime_2_min { 1.0 };
-  // double parameter_h_prime_2_max { 10.0 };
-  // double parameter_h_prime_2_step { (parameter_h_prime_2_max - parameter_h_prime_2_min) / (pow(2,N_bit_parameter_h_prime_2) - 1)};
-=======
   double parameter_beta_1_min { 0.0 };
   double parameter_beta_1_max { 1.0 };
   double parameter_beta_1_step { (parameter_beta_1_max - parameter_beta_1_min) / (pow(2,N_bit_parameter_beta_1) - 1)};
@@ -51,7 +37,6 @@ private:
   double parameter_h_prime_2_min { 0.0 };
   double parameter_h_prime_2_max { 1.0 };
   double parameter_h_prime_2_step { (parameter_h_prime_2_max - parameter_h_prime_2_min) / (pow(2,N_bit_parameter_h_prime_2) - 1)};
->>>>>>> score_graph
 
 
  public:
