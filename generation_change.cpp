@@ -1,6 +1,7 @@
 #include <random>
 
 #include "GA.h"
+#include "agent.h"
 
 double fitting(double parameter_beta_1, double parameter_beta_2, 
             double parameter_h_prime_1, double parameter_h_prime_2){
@@ -17,11 +18,10 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
         
     //     cal_fdtd(beta[t], h_prime[t]); /*betaとh'を代入して電界を返す*/
     // }
+    
      v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
              - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
 
-    
-    
     // for(int i = 0; i < Nr; i++){
     //     for(int m = 1; m < M; m++){
     //         v += 1/ (Nr * (M - 1)) * std::pow(std::abs( S[i][m] - s[i][m] ), 2)
@@ -56,8 +56,8 @@ void compose_roulette(const int N, Agent *agent, double *roulette, double *score
 
 void crossover(int head, Agent *p, Agent *c, int *s){ /*交叉*/
   //std::mt19937 rnd(1); 
-  std::random_device rnd;
-  std::mt19937 mt(rnd());
+   std::random_device rnd;
+   std::mt19937 mt(rnd());
 
     for(int i = 0; i < N_bit_total; i++){
         if(rnd() / i32 < 0.5){  /*入れ替えなし*/  

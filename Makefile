@@ -1,4 +1,4 @@
-OBJS = main.o generation_change.o parameter.o
+OBJS = main.o generation_change.o agent.o
 
 main: $(OBJS)
 	g++ -o $@  $(OBJS)

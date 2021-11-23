@@ -1,4 +1,5 @@
 #include "GA.h"
+#include "agent.h"
 
 void Agent::set_parameter(bool *Gene){
     // parameter_beta_1 = parameter_beta_1_min + parameter_beta_1_step + bin2dec(N_bit_parameter_beta_1, Gene);
