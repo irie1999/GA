@@ -71,6 +71,22 @@ void crossover(int head, Agent *p, Agent *c, int *s){ /*交叉*/
     }
 }
 
+void sort_ind(Agent *p){
+ Agent tmp;
+ for(int i = 0; i < Number_of_Individual - 1; i++){
+    for(int j = i + 1 ; j < Number_of_Individual; j++){
+        if( p[i].score < p[j].score ){
+            tmp = p[i];
+            p[i] = p[j];
+            p[j] = tmp;
+
+        }
+    }
+ }
+}
+
+
+
 int bin2dec(const int N_bit_initial, const int N_bit_end, bool *binary){
     /*2進数→10進数変換*/
     int v { 0 };

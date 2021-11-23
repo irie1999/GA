@@ -3,8 +3,6 @@
 
 #include "GA.h"
 
-
-
 class Agent{ /*各個体のクラス*/
 private:
   double parameter_beta_1_min { 0.0 };
@@ -19,7 +17,6 @@ private:
   double parameter_h_prime_2_min { 0.0 };
   double parameter_h_prime_2_max { 1.0 };
   double parameter_h_prime_2_step { (parameter_h_prime_2_max - parameter_h_prime_2_min) / (pow(2,N_bit_parameter_h_prime_2) - 1)};
-
 
  public:
   bool Gene[N_bit_total];

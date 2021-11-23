@@ -12,7 +12,7 @@ int main(void){
       std::mt19937 mt(rnd());
     //std::mt19937 rnd(1); 
 
-    double max, max_1, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
+    double max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
     double MAX[Number_of_Generation + 1];
     double score_average[Number_of_Generation + 1];
       Agent agent[2][Number_of_Individual];
@@ -28,10 +28,9 @@ int main(void){
     
     
 
-    for(int n_generation = 0; n_generation < Number_of_Generation; n_generation++){
+    for(int n_generation = 0; n_generation < Number_of_Generation - 1; n_generation++){
         const int PARENT { n_generation % 2 };
         const int CHILD { (n_generation + 1) % 2};
-        max_1 = -1.0;
         for(int i = 0; i < Number_of_Individual; i++){
             
             agent[PARENT][i].set_parameter(agent[PARENT][i].Gene);  /* 2進数から10進数に変換*/
@@ -40,17 +39,12 @@ int main(void){
                     = fitting( agent[PARENT][i].parameter_beta_1, agent[PARENT][i].parameter_beta_2,
                             agent[PARENT][i].parameter_h_prime_1, agent[PARENT][i].parameter_h_prime_2); 
                     /*FDTDの計算,返値がスコア*/
-
-            if( max_1 <= agent[PARENT][i].score){
-                max_1 = agent[PARENT][i].score;
-                max_beta_1 = agent[PARENT][i].parameter_beta_1;
-                max_beta_2 = agent[PARENT][i].parameter_beta_2;
-                max_h_prime_1 = agent[PARENT][i].parameter_h_prime_1;
-                max_h_prime_2 = agent[PARENT][i].parameter_h_prime_2;
-            }
-            
         }
-        MAX[n_generation] = max_1;
+        
+        
+        /*スコア順にソート*/
+        sort_ind(agent[PARENT]);
+        MAX[n_generation] = agent[PARENT][0].score;
         
         
         // std::cout << " beta_1 = " << max_beta_1 << " beta_2 = " << max_beta_2 
@@ -93,11 +87,11 @@ int main(void){
         }
         
     }
+    
+    
 
     /*最終世代の最もスコアが高いものを判断*/
-    const int PARENT { Number_of_Generation % 2 };
-    
-    max = -1.0;
+    const int PARENT { (Number_of_Generation - 1) % 2 };
     double sum = 0.0;
 
     for(int i = 0; i < Number_of_Individual; i++){
@@ -107,25 +101,22 @@ int main(void){
                             agent[PARENT][i].parameter_h_prime_1, agent[PARENT][i].parameter_h_prime_2); 
                     /*FDTDの計算,返値がスコア*/
                     sum += agent[PARENT][i].score;
-
-            if( max <= agent[PARENT][i].score){
-                max = agent[PARENT][i].score;
-                max_beta_1 = agent[PARENT][i].parameter_beta_1;
-                max_beta_2 = agent[PARENT][i].parameter_beta_2;
-                max_h_prime_1 = agent[PARENT][i].parameter_h_prime_1;
-                max_h_prime_2 = agent[PARENT][i].parameter_h_prime_2;
-            }
+                    sort_ind(agent[PARENT]);
     }
-    MAX[Number_of_Generation] = max;
-    score_average[Number_of_Generation] = sum / Number_of_Individual;
+    MAX[Number_of_Generation - 1] = agent[PARENT][0].score;
+    score_average[Number_of_Generation - 1] = sum / (Number_of_Individual - 1);
+    max_beta_1 = agent[PARENT][0].parameter_beta_1;
+    max_beta_2 = agent[PARENT][0].parameter_beta_2;
+    max_h_prime_1 = agent[PARENT][0].parameter_h_prime_1;
+    max_h_prime_2 = agent[PARENT][0].parameter_h_prime_2;
 
- std::ofstream ofs("../data/" "score_graph");
- for(int n_generation = 0; n_generation <= Number_of_Generation; n_generation++){
+    std::ofstream ofs("../data/" "score_graph");
+    for(int n_generation = 0; n_generation < Number_of_Generation; n_generation++){
      ofs << n_generation << " " << MAX[n_generation] << " " << score_average[n_generation] << std::endl;
- }
+    }
 
     std::cout << "beta_1= " << max_beta_1 << " beta_2= " << max_beta_2  << " h_prime_1= " << max_h_prime_1  
-              << " h_prime_2= " << max_h_prime_2 << " max= " << max << std::endl;
+              << " h_prime_2= " << max_h_prime_2 << " max= " << MAX[Number_of_Generation - 1] << std::endl;
 
     return 0;
 
