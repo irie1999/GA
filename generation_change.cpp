@@ -1,6 +1,7 @@
 #include <random>
 
 #include "GA.h"
+#include "agent.h"
 
 double fitting(double parameter_beta_1, double parameter_beta_2, 
             double parameter_h_prime_1, double parameter_h_prime_2){
@@ -55,8 +56,8 @@ void compose_roulette(const int N, Agent *agent, double *roulette, double *score
 
 void crossover(int head, Agent *p, Agent *c, int *s){ /*交叉*/
   //std::mt19937 rnd(1); 
-  std::random_device rnd;
-  std::mt19937 mt(rnd());
+   std::random_device rnd;
+   std::mt19937 mt(rnd());
 
     for(int i = 0; i < N_bit_total; i++){
         if(rnd() / i32 < 0.5){  /*入れ替えなし*/  

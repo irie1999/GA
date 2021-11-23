@@ -4,12 +4,13 @@
 #include <random>
 
 #include "GA.h"
+#include "agent.h"
 
 int main(void){
     
-    //  std::random_device rnd;
-    //  std::mt19937 mt(rnd());
-    std::mt19937 rnd(1); 
+      std::random_device rnd;
+      std::mt19937 mt(rnd());
+    //std::mt19937 rnd(1); 
 
     double max, max_1, max_beta_1, max_beta_2, max_h_prime_1, max_h_prime_2;  /*最終世代スコアの最大値を判断*/ 
     double MAX[Number_of_Generation + 1];
