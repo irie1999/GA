@@ -25,7 +25,7 @@
 std::string data_dir = "data/";
 
 
-double **cal_fdtd(double beta, double h_prime, int t){
+double *cal_fdtd(double beta, double h_prime, int t){
 
     // double h_prime = 85.0e3; /* [m] effective reflection height */
     // double beta = 0.63; /* sharpness factor */
@@ -200,5 +200,5 @@ double **cal_fdtd(double beta, double h_prime, int t){
   // }
   // ofs1.close();
 
-  return Si_tm;
+  return Si_tm[t];
 }

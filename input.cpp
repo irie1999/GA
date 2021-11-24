@@ -14,11 +14,11 @@ void input(double **S,int t){
 		exit(1);
 	}
 
-	char buf[1900];	// データ一時保管用配列
+	char buf[900];	// データ一時保管用配列
 
 	int linenum = 0; // データの行数を数える
 	char *p;
-	//double *ggg = new double [900]; /*テスト用*/
+	double *ggg = new double [900]; /*テスト用*/
 
 	while(ifs.getline(buf,sizeof(buf))){	// ファイルから1行ずつ読み込む
 		linenum++;	// 行数をカウントしている
@@ -32,9 +32,9 @@ void input(double **S,int t){
 	for(int i=0 ; i<linenum ; i++){
 		ifs.getline(buf,sizeof(buf));	// 一行読み込んで…
         p = strtok(buf," ");
-        S[t][i] = atof(p);
+        ggg[i] = atof(p);
         p = strtok(NULL, "\n");
-        //Ne[i] = atof(p);
+        S[t][i] = atof(p);
 		
 	}
 }

@@ -7,14 +7,9 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
             double parameter_h_prime_1, double parameter_h_prime_2){
     double v; /*score*/
     double beta[3], h_prime[3];
-    double **s = new double*[3];
-    for(int i=0; i < 3; i++){
-        s[i] = new double[900];
-    }
-    double **S = new double*[3];
-    for(int i=0; i < 3; i++){
-        S[i] = new double[1900];
-    }
+    double **s = allocate_memory2d(3, 900, 0.0);
+    double **S = allocate_memory2d(3, 900, 0.0);
+    
     double time[3];
     time[0] = 6.1667;
     time[1] = 6.313;
@@ -26,7 +21,7 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
         beta[t] = parameter_beta_2 * pow((time[t] - time[0]), 2) + parameter_beta_1 * (time[t] - time[0]) + beta[0];
         h_prime[t] = parameter_h_prime_2 * pow((time[t] - time[0]), 2) + parameter_h_prime_1 * (time[t] - time[0]) + h_prime[0];
         input(S,t);
-        s = cal_fdtd(beta[t], h_prime[t], t); /*betaとh'を代入して電界を返す*/
+        s[t] = cal_fdtd(beta[t], h_prime[t], t); /*betaとh'を代入して電界を返す*/
     }
     
     // v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
@@ -40,8 +35,6 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
 
         }
     }
-    
-
     return v;
 }
 

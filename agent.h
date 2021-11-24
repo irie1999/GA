@@ -3,7 +3,7 @@
 
 #include "GA.h"
 
-class Agent{ /*各個体のクラス*/ /*beta最小値0.4最大値1 h_prim最小値60最大値86*/
+class Agent{ /*各個体のクラス*/ /*beta最小値0.4最大値0.95 h_prim最小値60最大値86*/
 private:
   double parameter_beta_1_min { 0.4 };
   double parameter_beta_1_max { 1.0 };
