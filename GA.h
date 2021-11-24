@@ -22,6 +22,11 @@ constexpr int Number_of_Generation { 20 };  /*n世代*/
 
 //constexpr int Max_Generation { 120 };
 
+constexpr int Nr_1 { 801 };
+constexpr int M { 2 };
+constexpr double p_beta { 1.0 };
+constexpr double p_h_prime { 1.0 };
+
 
 void create_ind(class Agent *agent);
 void cal_ind(Agent *p);
@@ -33,6 +38,8 @@ double fitting(double parameter_beta_1, double parameter_beta_2, double paramete
 void sort_ind(class Agent *p);
 void mutate_ind(Agent *c);
 void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_average);
+double **cal_fdtd(double beta, double h_prime, int t);
+void input(double **S,int t);
 #endif
 
 

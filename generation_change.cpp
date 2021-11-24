@@ -6,30 +6,40 @@
 double fitting(double parameter_beta_1, double parameter_beta_2, 
             double parameter_h_prime_1, double parameter_h_prime_2){
     double v; /*score*/
-    double u_beta_1 = 1.0, u_beta_2 = 1.0;
-    double u_h_prime_1 = 1.0, u_h_prime_2 = 1.0;
-    // double beta[3], h_prime[3];
-    // beta[0] = 0.49366;
-    // h_prime[0] = 77.69128;
+    double beta[3], h_prime[3];
+    double **s = new double*[3];
+    for(int i=0; i < 3; i++){
+        s[i] = new double[900];
+    }
+    double **S = new double*[3];
+    for(int i=0; i < 3; i++){
+        S[i] = new double[1900];
+    }
+    double time[3];
+    time[0] = 6.1667;
+    time[1] = 6.313;
+    time[2] = 6.5; 
+    beta[0] = 0.49366;
+    h_prime[0] = 77.69128;
 
-    // for(int t = 0; t <= 2; t++){
-    //     beta[t] = parameter_beta_2 * pow((t[t] - t[0]), 2) + parameter_beta_1 * (t[t] - t[0]) + beta[0];
-    //     h_prime[t] = parameter_h_prime_2 * pow((t[t] - t[0]), 2) + parameter_h_prime_1 * (t[t] - t[0]) + h_prime[0];
-        
-    //     cal_fdtd(beta[t], h_prime[t]); /*betaとh'を代入して電界を返す*/
-    // }
+    for(int t = 1; t <= 2; t++){
+        beta[t] = parameter_beta_2 * pow((time[t] - time[0]), 2) + parameter_beta_1 * (time[t] - time[0]) + beta[0];
+        h_prime[t] = parameter_h_prime_2 * pow((time[t] - time[0]), 2) + parameter_h_prime_1 * (time[t] - time[0]) + h_prime[0];
+        input(S,t);
+        s = cal_fdtd(beta[t], h_prime[t], t); /*betaとh'を代入して電界を返す*/
+    }
     
-    v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
-             - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
+    // v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
+    //          - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
 
-    // for(int i = 0; i < Nr; i++){
-    //     for(int m = 1; m < M; m++){
-    //         v += 1/ (Nr * (M - 1)) * std::pow(std::abs( S[i][m] - s[i][m] ), 2)
-    //              + p_beta * std::pow(std::abs( beta[m] - beta[0]), 2) 
-    //              + p_h_prime * std::pow(std::abs( h_prime[m] - beta[0]), 2);
+    for(int i = 0; i < Nr_1; i++){
+        for(int m = 1; m < M; m++){
+            v += 1/ (Nr_1 * (M - 1)) * std::pow(std::abs( S[i][m] - s[i][m] ), 2)
+                 + p_beta * std::pow(std::abs( beta[m] - beta[0]), 2) 
+                 + p_h_prime * std::pow(std::abs( h_prime[m] - beta[0]), 2);
 
-    //     }
-    // }
+        }
+    }
     
 
     return v;
