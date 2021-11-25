@@ -55,9 +55,7 @@ void create_ind(Agent *agent){
     for(int i = 0; i < Number_of_Individual; i++){
         for(int n = 0; n < N_bit_total; n++){
             agent[i].Gene[n] = rnd() % 2;
-            //std::cout << agent[0][i].Gene[n] << " "; 
         }
-        //std::cout << std::endl;
     }
 }
 
@@ -68,17 +66,11 @@ void compose_roulette(const int N, Agent *agent, double *roulette, double *score
     double sum = 0.0; 
     for(int i = 0; i < Number_of_Individual; i++){
         sum += agent[i].score;
-        //std::cout << "agent[" << i << "].score= " << agent[i].score << std::endl;
     }    
     score_average[n_generation] = sum / Number_of_Individual;
-    //std::cout << "sum_average= " << sum_1 << std::endl;
-    //std::cout << std::endl;
-    //std::cout << "sum= " << sum << std::endl;
     roulette[0] = agent[0].score / sum;
-    //std::cout << "roulette[0]= " << roulette[0] << std::endl;
     for(int i = 1; i < Number_of_Individual ; i++){
         roulette[i] = roulette[i-1] + agent[i].score / sum;
-        // std::cout << "roulette[" << 3 << "]= " << roulette[3] << std::endl;
     }
 }
 
@@ -103,22 +95,24 @@ void selection_crossover(double *roulette, Agent *p, Agent *c){
     std::random_device rnd;
     std::mt19937 mt(rnd());
     //std::mt19937 rnd(1);
-    for(int i = 0; i < Number_of_Individual; i+=2){
+    for(int i = 2; i < Number_of_Individual; i+=2){
             int sict[2];
             for(int j = 0; j <2 ; j++){
                 double rnd_num = rnd() / i32;
                 int k = 0;
                 while( roulette[k] < rnd_num){  /*親を2体選ぶルーレット*/
-                //std::cout << "k= " << k << " " << roulette[k] << " " << rnd_num << std::endl;
                     k++;
                 }
-                //std::cout << "k= " << k <<" " << roulette[k] << " " << rnd_num << std::endl; 
                 sict[j] = k;
-                //std::cout << "k= " << k << std::endl;
-                //std::cout << "sict[" << j << "]= " << sict[j] << std::endl << std::endl; 
             }
             crossover(i, p, c, sict); /*交叉*/
+    }
+    /*エリート戦略*/
+    for(int i = 0; i < 2; i++){ /*スコア上位2体を無条件に選択*/
+        for(int n = 0; n < N_bit_total; n++){
+            c[i].Gene[n] = p[i].Gene[n];
         }
+    }
 }
 
 void mutate_ind(Agent *c){
