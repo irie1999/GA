@@ -29,17 +29,18 @@ constexpr double p_h_prime { 1.0 };
 
 
 void create_ind(class Agent *agent);
-void cal_ind(Agent *p);
+void cal_ind(Agent *p, double **s, double **S, double **Ei_tm);
 int bin2dec(const int N_bit_initial, const int N_bit_end, bool *binary);
 void compose_roulette(const int N, class Agent *agent, double *roulette, double *score_average, int n_generation);
 void crossover(int head, class Agent *p, class Agent *c, int *s);
 void selection_crossover(double *roulette, Agent *p, Agent *c);
-double fitting(double parameter_beta_1, double parameter_beta_2, double parameter_h_prime_1, double parameter_h_prime_2);
+double fitting(double parameter_beta_1, double parameter_beta_2, double parameter_h_prime_1, double parameter_h_prime_2, double **s, double **S, double **Ei_tm);
 void sort_ind(class Agent *p);
 void mutate_ind(Agent *c);
-void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_average);
+void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_average, double **s, double **S, double **Ei_tm);
 double *cal_fdtd(double beta, double h_prime, int t);
 void input(double **S,int t);
+//double **allocate_memory2d(int m, int n, double ini_v);
 #endif
 
 

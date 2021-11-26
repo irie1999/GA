@@ -5,12 +5,15 @@
 
 #include "GA.h"
 #include "agent.h"
+#include "fdtd/memory_allocate.h"
 
 int main(void){
     std::random_device rnd;
     std::mt19937 mt(rnd());
     //std::mt19937 rnd(1); 
- 
+    double **s = allocate_memory2d(3, 801, 0.0);
+    double **S = allocate_memory2d(3, 801, 0.0);
+    double **Ei_tm = allocate_memory2d(3, 801, 0.0);
     double max_parameter[4];  /*最終世代スコアの最大値を判断*/ 
     double MAX[Number_of_Generation + 1];   /*最大値を格納*/
     double score_average[Number_of_Generation + 1]; /*平均値を格納*/
@@ -23,7 +26,7 @@ int main(void){
         const int PARENT { n_generation % 2 };
         const int CHILD { (n_generation + 1) % 2};
         /*スコアを計算*/
-        cal_ind(agent[PARENT]);
+        cal_ind(agent[PARENT], s, S, Ei_tm);
         
         /*スコア順にソート*/
         sort_ind(agent[PARENT]);
@@ -45,7 +48,7 @@ int main(void){
     /*最終世代の最もスコアが高いものを判断*/
     const int PARENT { (Number_of_Generation - 1) % 2 };
    
-    final_cal_ind(agent[PARENT], max_parameter, MAX, score_average);
+    final_cal_ind(agent[PARENT], max_parameter, MAX, score_average, s, S, Ei_tm);
 
     std::ofstream ofs("../data/" "score_graph");
     for(int n_generation = 0; n_generation < Number_of_Generation; n_generation++){

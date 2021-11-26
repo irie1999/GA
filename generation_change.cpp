@@ -3,12 +3,12 @@
 #include "GA.h"
 #include "agent.h"
 
+
 double fitting(double parameter_beta_1, double parameter_beta_2, 
-            double parameter_h_prime_1, double parameter_h_prime_2){
+            double parameter_h_prime_1, double parameter_h_prime_2, double **s, double **S, double **Ei_tm){
     double v; /*score*/
     double beta[3], h_prime[3];
-    double **s = allocate_memory2d(3, 900, 0.0);
-    double **S = allocate_memory2d(3, 900, 0.0);
+    
     
     double time[3];
     time[0] = 6.1667;
@@ -17,11 +17,11 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     beta[0] = 0.49366;
     h_prime[0] = 77.69128;
 
-    for(int t = 1; t <= 2; t++){
+    for(int t = 0; t <= 2; t++){
         beta[t] = parameter_beta_2 * pow((time[t] - time[0]), 2) + parameter_beta_1 * (time[t] - time[0]) + beta[0];
         h_prime[t] = parameter_h_prime_2 * pow((time[t] - time[0]), 2) + parameter_h_prime_1 * (time[t] - time[0]) + h_prime[0];
         input(S,t);
-        s[t] = cal_fdtd(beta[t], h_prime[t], t); /*betaとh'を代入して電界を返す*/
+        Ei_tm[t] = cal_fdtd(beta[t], h_prime[t], t); /*betaとh'を代入して電界を返す*/
     }
     
     // v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
@@ -38,12 +38,13 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     return v;
 }
 
-void cal_ind(Agent *p){
+void cal_ind(Agent *p, double **s, double **S, double **Ei_tm){
     for(int i = 0; i < Number_of_Individual; i++){
             p[i].set_parameter(p[i].Gene);  /* 2進数から10進数に変換*/
             p[i].score  /*FDTDの計算,返値がスコア*/
                     = fitting( p[i].parameter_beta_1, p[i].parameter_beta_2,
-                               p[i].parameter_h_prime_1, p[i].parameter_h_prime_2); 
+                               p[i].parameter_h_prime_1, p[i].parameter_h_prime_2,
+                               s, S, Ei_tm); 
                     
         }
 }
@@ -128,13 +129,13 @@ void mutate_ind(Agent *c){
     }
 }
 
-void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_average){
+void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_average, double **s, double **S, double **Ei_tm){
     double sum = 0.0;
     for(int i = 0; i < Number_of_Individual; i++){
         p[i].set_parameter(p[i].Gene);  /* 2進数から10進数に変換*/
         p[i].score/*FDTDの計算,返値がスコア*/
             = fitting( p[i].parameter_beta_1, p[i].parameter_beta_2,
-                       p[i].parameter_h_prime_1, p[i].parameter_h_prime_2); 
+                       p[i].parameter_h_prime_1, p[i].parameter_h_prime_2, s, S, Ei_tm); 
         sum += p[i].score;
         sort_ind(p);
     }
@@ -172,4 +173,16 @@ int bin2dec(const int N_bit_initial, const int N_bit_end, bool *binary){
     }
     return v;
 }
+
+// double **allocate_memory2d(int m, int n, double ini_v){
+//   double **v = new double* [m];
+//   v[0] = new double [m*n];
+//   for(int i = 0; i < m; i++){
+//     v[i] = v[0] + i*n;
+//     for(int j = 0; j < n; j++){
+//       v[i][j] = ini_v;
+//     }
+//   }
+//   return v;
+// }
 
