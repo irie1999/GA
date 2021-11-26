@@ -8,6 +8,7 @@
 #include "fdtd/memory_allocate.h"
 
 int main(void){
+    std::cout << "a" << std::endl;
     std::random_device rnd;
     std::mt19937 mt(rnd());
     //std::mt19937 rnd(1); 

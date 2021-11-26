@@ -7,5 +7,10 @@ OBJS = main.o generation_change.o agent.o fdtd/cal_fdtd.o \
 main: $(OBJS)
 	g++ -o $@  $(OBJS)
 
-%.o: %.cpp GA.h agent.h 
+
+%.o: %.cpp fdtd/%.cpp GA.h agent.h 
 	g++ -c $< -Wall -O3 -I.
+
+
+
+
