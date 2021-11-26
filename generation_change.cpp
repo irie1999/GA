@@ -6,10 +6,8 @@
 
 double fitting(double parameter_beta_1, double parameter_beta_2, 
             double parameter_h_prime_1, double parameter_h_prime_2, double **s, double **S, double **Ei_tm){
-    double v; /*score*/
+    double v = 0.0; /*score*/
     double beta[3], h_prime[3];
-    
-    
     double time[3];
     time[0] = 6.1667;
     time[1] = 6.313;
@@ -23,16 +21,15 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
         cal_fdtd(beta[t], h_prime[t], t, Ei_tm); /*betaとh'を代入して電界を返す*/
     }
     
-    // v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
-    //          - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
 
-    for(int i = 0; i < Nr_1; i++){
-        for(int m = 1; m < M; m++){
-            v += 1/ (Nr_1 * (M - 1)) * std::pow(std::abs( S[i][m] - s[i][m] ), 2)
-                 + p_beta * std::pow(std::abs( beta[m] - beta[0]), 2) 
-                 + p_h_prime * std::pow(std::abs( h_prime[m] - beta[0]), 2);
+    for(int t_m = 1; t_m < M; t_m++){
+        for(int i = 0; i < GA_Nr; i++){
+            s[t_m][i] = (Ei_tm[t_m][i] - Ei_tm[t_m - 1][i]) / (time[t_m] - time[t_m -1]);
 
+            v += 1/ (GA_Nr * (M - 1)) * std::pow(std::abs( S[t_m][i] - s[t_m][i] ), 2);
         }
+            v += p_beta * std::pow(std::abs( beta[t_m] - beta[0]), 2) 
+                 + p_h_prime * std::pow(std::abs( h_prime[t_m] - beta[0]), 2);
     }
     return v;
 }

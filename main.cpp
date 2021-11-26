@@ -5,10 +5,9 @@
 
 #include "GA.h"
 #include "agent.h"
-#include "fdtd/memory_allocate.h"
+#include "memory_allocate.h"
 
 int main(void){
-    std::cout << "a" << std::endl;
     std::random_device rnd;
     std::mt19937 mt(rnd());
     //std::mt19937 rnd(1); 
@@ -22,6 +21,9 @@ int main(void){
     Agent agent[2][Number_of_Individual];   /*個体*/
  
     create_ind(agent[0]); /*初期ランダム遺伝子の作成*/
+
+    input(S,1);
+    input(S,2);
     
     for(int n_generation = 0; n_generation < Number_of_Generation - 1; n_generation++){
         const int PARENT { n_generation % 2 };
