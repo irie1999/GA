@@ -1,0 +1,14 @@
+data/
+fdtd/
+*.o
+*.for
+*.dat
+*.asc
+*.tgz
+fort.7
+main
+00readme.txt
+.nfs0000000003e60c840000003e
+.nfs0000000003e60ca20000003f
+
+
