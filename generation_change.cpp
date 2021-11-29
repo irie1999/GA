@@ -22,14 +22,14 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     }
     
 
-    for(int t_m = 1; t_m < M; t_m++){
+    for(int t_m = 1; t_m <= M; t_m++){
         for(int i = 0; i < GA_Nr; i++){
             s[t_m][i] = (Ei_tm[t_m][i] - Ei_tm[t_m - 1][i]) / (time[t_m] - time[t_m -1]);
 
             v += 1/ (GA_Nr * (M - 1)) * std::pow(std::abs( S[t_m][i] - s[t_m][i] ), 2);
         }
-            v += p_beta * std::pow(std::abs( beta[t_m] - beta[0]), 2) 
-                 + p_h_prime * std::pow(std::abs( h_prime[t_m] - beta[0]), 2);
+            v += p_beta * std::pow(std::abs( beta[M] - beta[0]), 2) 
+                 + p_h_prime * std::pow(std::abs( h_prime[M] - beta[0]), 2);
     }
     return v;
 }
@@ -125,7 +125,7 @@ void mutate_ind(Agent *c){
     }
 }
 
-void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_average, double **s, double **S, double **Ei_tm){
+void final_cal_ind(Agent *p, double *max_parameter, double *MAX, double *score_average, double **s, double **S, double **Ei_tm){
     double sum = 0.0;
     for(int i = 0; i < Number_of_Individual; i++){
         p[i].set_parameter(p[i].Gene);  /* 2進数から10進数に変換*/
@@ -137,10 +137,10 @@ void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_av
     }
     MAX[Number_of_Generation - 1] = p[0].score;
     score_average[Number_of_Generation - 1] = sum / (Number_of_Individual - 1);
-    max_paramter[0] = p[0].parameter_beta_1;
-    max_paramter[1] = p[0].parameter_beta_2;
-    max_paramter[2] = p[0].parameter_h_prime_1;
-    max_paramter[3] = p[0].parameter_h_prime_2;
+    max_parameter[0] = p[0].parameter_beta_1;
+    max_parameter[1] = p[0].parameter_beta_2;
+    max_parameter[2] = p[0].parameter_h_prime_1;
+    max_parameter[3] = p[0].parameter_h_prime_2;
 }
 
 void sort_ind(Agent *p){

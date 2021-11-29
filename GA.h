@@ -37,7 +37,7 @@ void selection_crossover(double *roulette, Agent *p, Agent *c);
 double fitting(double parameter_beta_1, double parameter_beta_2, double parameter_h_prime_1, double parameter_h_prime_2, double **s, double **S, double **Ei_tm);
 void sort_ind(class Agent *p);
 void mutate_ind(Agent *c);
-void final_cal_ind(Agent *p, double *max_paramter, double *MAX, double *score_average, double **s, double **S, double **Ei_tm);
+void final_cal_ind(Agent *p, double *max_parameter, double *MAX, double *score_average, double **s, double **S, double **Ei_tm);
 double *cal_fdtd(double beta, double h_prime, int t, double **Ei_tm);
 void input(double **S,int t);
 //double **allocate_memory2d(int m, int n, double ini_v);

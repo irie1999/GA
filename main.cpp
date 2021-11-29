@@ -26,6 +26,7 @@ int main(void){
     input(S,2);
     
     for(int n_generation = 0; n_generation < Number_of_Generation - 1; n_generation++){
+        std::cout << "世代= " << n_generation << std::endl;
         const int PARENT { n_generation % 2 };
         const int CHILD { (n_generation + 1) % 2};
         /*スコアを計算*/
@@ -61,6 +62,17 @@ int main(void){
     std::cout << "beta_1= " << max_parameter[0] << " beta_2= " << max_parameter[1]  << " h_prime_1= " << max_parameter[2]  
               << " h_prime_2= " << max_parameter[3] << " max= " << MAX[Number_of_Generation - 1] << std::endl;
 
+    double beta[3], h_prime[3];
+    double time[3];
+    time[0] = 6.1667;
+    time[1] = 6.313;
+    time[2] = 6.5; 
+    beta[0] = 0.49366;
+    h_prime[0] = 77.69128;
+    for(int t = 1; t < 3; t++){
+    std::cout << "beta_" + std::string(t) << "= " << max_parameter[1] * pow((time[t] - time[0]),2) + max_parameter[0] * (time[t] - time[0]) + 0.49366 << std::endl;
+              << "h_prime" + std::string(t)  << "= " << max_parameter[3] * pow((time[t] - time[0]),2) + max_parameter[2] * (time[t] - time[0]) + 77.69128 << std::endl;
+    }
     return 0;
 
 }
