@@ -11,10 +11,10 @@ int main(void){
     std::random_device rnd;
     std::mt19937 mt(rnd());
     //std::mt19937 rnd(1); 
-    double **s = allocate_memory2d(3, 801, 0.0);
-    double **S = allocate_memory2d(3, 801, 0.0);
-    double **Ei_tm = allocate_memory2d(3, 801, 0.0);
-    double max_parameter[4];  /*最終世代スコアの最大値を判断*/ 
+    double **s = allocate_memory2d(3, 801, 0.0);  /*探索する個体の電界強度の変化率*/
+    double **S = allocate_memory2d(3, 801, 0.0);  /*観測した電界強度の変化率*/
+    double **Ei_tm = allocate_memory2d(3, 801, 0.0); /*個体のβとh'を与えた得られた電界強度"*/
+    double max_parameter[4];  /*最終世代のスコアの最大値のパラメーターを格納*/ 
     double MAX[Number_of_Generation + 1];   /*最大値を格納*/
     double score_average[Number_of_Generation + 1]; /*平均値を格納*/
     double roulette[Number_of_Individual];  /*ルーレット*/
@@ -22,8 +22,8 @@ int main(void){
  
     create_ind(agent[0]); /*初期ランダム遺伝子の作成*/
 
-    input(S,1);
-    input(S,2);
+    input(S,1);  /*t_1の時の観測した電界強度*/
+    input(S,2);  /*t_2の時の観測した電界強度*/
     
     for(int n_generation = 0; n_generation < Number_of_Generation - 1; n_generation++){
         std::cout << "世代= " << n_generation << std::endl;
@@ -70,8 +70,8 @@ int main(void){
     beta[0] = 0.49366;
     h_prime[0] = 77.69128;
     for(int t = 1; t < 3; t++){
-    std::cout << "beta_" + std::string(t) << "= " << max_parameter[1] * pow((time[t] - time[0]),2) + max_parameter[0] * (time[t] - time[0]) + 0.49366 << std::endl;
-              << "h_prime" + std::string(t)  << "= " << max_parameter[3] * pow((time[t] - time[0]),2) + max_parameter[2] * (time[t] - time[0]) + 77.69128 << std::endl;
+    std::cout << "beta_" + std::to_string(t) << "= " << max_parameter[1] * pow((time[t] - time[0]),2) + max_parameter[0] * (time[t] - time[0]) + 0.49366 << std::endl
+              << "h_prime" + std::to_string(t)  << "= " << max_parameter[3] * pow((time[t] - time[0]),2) + max_parameter[2] * (time[t] - time[0]) + 77.69128 << std::endl;
     }
     return 0;
 
