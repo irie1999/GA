@@ -36,13 +36,13 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
 
 void cal_ind(Agent *p, double **s, double **S, double **Ei_tm){
     for(int i = 0; i < Number_of_Individual; i++){
-            p[i].set_parameter(p[i].Gene);  /* 2進数から10進数に変換*/
-            p[i].score  /*FDTDの計算,返値がスコア*/
-                    = fitting( p[i].parameter_beta_1, p[i].parameter_beta_2,
-                               p[i].parameter_h_prime_1, p[i].parameter_h_prime_2,
-                               s, S, Ei_tm); 
+        std::cout << "個体= " << i << std::endl; 
+        p[i].set_parameter(p[i].Gene);  /* 2進数から10進数に変換*/
+        p[i].score  /*FDTDの計算,返値がスコア*/
+            = fitting( p[i].parameter_beta_1, p[i].parameter_beta_2,
+                       p[i].parameter_h_prime_1, p[i].parameter_h_prime_2, s, S, Ei_tm); 
                     
-        }
+    }
 }
 
 void create_ind(Agent *agent){
