@@ -101,8 +101,7 @@ void cal_fdtd(double beta, double h_prime, int time, double **Ei_tm){
   std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
 
   ///時間ループ///
-//  for(int n = 1; n <= Nt; n++){
-  for(int n = 1; n <= 30; n++){
+  for(int n = 1; n <= Nt; n++){
 
     int NEW = (n+1) % 2;
     int OLD = n % 2;
@@ -169,5 +168,4 @@ void cal_fdtd(double beta, double h_prime, int time, double **Ei_tm){
   delete [] F;
   delete [] Er0;
 
-  exit(0);
 }
