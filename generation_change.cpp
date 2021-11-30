@@ -15,11 +15,11 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     time[1] = 6.313;
     time[2] = 6.5; 
     beta[0] = 0.49366;
-    h_prime[0] = 77.69128;
+    h_prime[0] = 77.69128e3;
 
     for(int t = 0; t <= 2; t++){
         beta[t] = parameter_beta_2 * pow((time[t] - time[0]), 2) + parameter_beta_1 * (time[t] - time[0]) + beta[0];
-        h_prime[t] = parameter_h_prime_2 * pow((time[t] - time[0]), 2) + parameter_h_prime_1 * (time[t] - time[0]) + h_prime[0];
+        h_prime[t] = parameter_h_prime_2 * 1e3 * pow((time[t] - time[0]), 2) + parameter_h_prime_1 * 1e3 * (time[t] - time[0]) + h_prime[0];
         cal_fdtd(beta[t], h_prime[t], t, Ei_tm); /*betaとh'を代入して電界を返す*/
     }
     
