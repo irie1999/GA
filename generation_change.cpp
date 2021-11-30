@@ -5,32 +5,13 @@
 
 
 double fitting(double parameter_beta_1, double parameter_beta_2, 
-            double parameter_h_prime_1, double parameter_h_prime_2, double **s, double **S, double **Ei_tm){
-    double v = 0.0; /*score*/
-    double beta[3], h_prime[3];
-    double time[3];
-    time[0] = 6.1667;
-    time[1] = 6.313;
-    time[2] = 6.5; 
-    beta[0] = 0.49366;
-    h_prime[0] = 77.69128;
-
-    for(int t = 0; t <= 2; t++){
-        beta[t] = parameter_beta_2 * pow((time[t] - time[0]), 2) + parameter_beta_1 * (time[t] - time[0]) + beta[0];
-        h_prime[t] = parameter_h_prime_2 * pow((time[t] - time[0]), 2) + parameter_h_prime_1 * (time[t] - time[0]) + h_prime[0];
-        cal_fdtd(beta[t], h_prime[t], t, Ei_tm); /*betaとh'を代入して電界を返す*/
-    }
+            double parameter_h_prime_1, double parameter_h_prime_2){
+    double v; /*score*/
+    double u_beta_1 = 11.0/15.0, u_beta_2 = 1.0/15.0;
+    double u_h_prime_1 = 15.0/15.0, u_h_prime_2 = 9.0/15.0;
     
-
-    for(int t_m = 1; t_m <= M; t_m++){
-        for(int i = 0; i < GA_Nr; i++){
-            s[t_m][i] = (Ei_tm[t_m][i] - Ei_tm[t_m - 1][i]) / (time[t_m] - time[t_m -1]);
-
-            v += 1/ (GA_Nr * (M - 1)) * std::pow(std::abs( S[t_m][i] - s[t_m][i] ), 2);
-        }
-            v += p_beta * std::pow(std::abs( beta[M] - beta[0]), 2) 
-                 + p_h_prime * std::pow(std::abs( h_prime[M] - beta[0]), 2);
-    }
+    v = std::exp( - std::pow((parameter_beta_1 - u_beta_1), 2) - std::pow((parameter_beta_2 - u_beta_2), 2)
+             - std::pow((parameter_h_prime_1 - u_h_prime_1), 2) - std::pow((parameter_h_prime_2 - u_h_prime_2), 2));
     return v;
 }
 
@@ -39,9 +20,7 @@ void cal_ind(Agent *p, double **s, double **S, double **Ei_tm){
             p[i].set_parameter(p[i].Gene);  /* 2進数から10進数に変換*/
             p[i].score  /*FDTDの計算,返値がスコア*/
                     = fitting( p[i].parameter_beta_1, p[i].parameter_beta_2,
-                               p[i].parameter_h_prime_1, p[i].parameter_h_prime_2,
-                               s, S, Ei_tm); 
-                    
+                               p[i].parameter_h_prime_1, p[i].parameter_h_prime_2); 
         }
 }
 
@@ -63,7 +42,7 @@ void compose_roulette(const int N, Agent *agent, double *roulette, double *score
     double sum = 0.0; 
     for(int i = 0; i < Number_of_Individual; i++){
         sum += agent[i].score;
-    }    
+    }
     score_average[n_generation] = sum / Number_of_Individual;
     roulette[0] = agent[0].score / sum;
     for(int i = 1; i < Number_of_Individual ; i++){
