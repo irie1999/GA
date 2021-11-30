@@ -73,8 +73,8 @@ int main(void){
     beta[0] = 0.49366;
     h_prime[0] = 77.69128;
     for(int t = 1; t < 3; t++){
-    std::cout << "beta_" + std::to_string(t) << "= " << max_parameter[1] * pow((time[t] - time[0]),2) + max_parameter[0] * (time[t] - time[0]) + 0.49366 << std::endl
-              << "h_prime" + std::to_string(t)  << "= " << max_parameter[3] * pow((time[t] - time[0]),2) + max_parameter[2] * (time[t] - time[0]) + 77.69128 << std::endl;
+    std::cout << "beta_" + std::to_string(t) << "= " << max_parameter[1] * pow((time[t] - time[0]),2) + max_parameter[0] * (time[t] - time[0]) + beta[0] << std::endl
+              << "h_prime" + std::to_string(t)  << "= " << max_parameter[3] * pow((time[t] - time[0]),2) + max_parameter[2] * (time[t] - time[0]) + h_prime[0] << std::endl;
     }
     return 0;
 
