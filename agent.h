@@ -11,10 +11,10 @@ private:
   double parameter_beta_2_min { 0.4 };
   double parameter_beta_2_max { 1.0 };
   double parameter_beta_2_step { (parameter_beta_2_max - parameter_beta_2_min) / (pow(2,N_bit_parameter_beta_2) - 1)};
-  double parameter_h_prime_1_min { 60.0 };
+  double parameter_h_prime_1_min { 60.0 }; /*km*/
   double parameter_h_prime_1_max { 86.0 };
   double parameter_h_prime_1_step { (parameter_h_prime_1_max - parameter_h_prime_1_min) / (pow(2,N_bit_parameter_h_prime_1) - 1)};
-  double parameter_h_prime_2_min { 60.0 };
+  double parameter_h_prime_2_min { 60.0 }; /*km*/
   double parameter_h_prime_2_max { 86.0 };
   double parameter_h_prime_2_step { (parameter_h_prime_2_max - parameter_h_prime_2_min) / (pow(2,N_bit_parameter_h_prime_2) - 1)};
 

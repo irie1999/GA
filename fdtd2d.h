@@ -62,8 +62,8 @@ constexpr double Rx_Longitude { 139.54328 };
 //constexpr double beta { 0.3 };
 
 /* Nighttime condition */
-constexpr double z_prime { 85.0 }; //[km]
-constexpr double beta { 0.63 };
+//constexpr double z_prime { 85.0 }; //[km]
+//constexpr double beta { 0.63 };
 
 /* Current source Pulse waveform */
 //constexpr double s  { 1.59099e-5 };
@@ -90,8 +90,8 @@ constexpr int Nt { int(Tmax/Dt)+1 };          //時間ループ
 constexpr double OMG { FREQ * 2. * M_PI }; //2*PI*f
 
 /* Parameters of ionosphere */
-constexpr double Lower_boundary_of_ionosphere { 50.0e3 };
-//constexpr double Lower_boundary_of_ionosphere { 60.0e3 }; /*電子密度が60kmのため*/
+//constexpr double Lower_boundary_of_ionosphere { 50.0e3 };
+constexpr double Lower_boundary_of_ionosphere { 60.0e3 }; /*電子密度が60kmのため*/
 
 constexpr int Nr_iono { int( (Rr - Lower_boundary_of_ionosphere) / dr ) + 1 };  /*121*/
 constexpr int Nr_atmo { int( Lower_boundary_of_ionosphere / dr ) };
