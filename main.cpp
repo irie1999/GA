@@ -24,6 +24,9 @@ int main(void){
 
     input(S,1);  /*t_1の時の観測した電界強度*/
     input(S,2);  /*t_2の時の観測した電界強度*/
+
+    std::cout << "世代=" << Number_of_Generation << std::endl
+              << "個体=" << Number_of_Individual << std::endl;
     
     for(int n_generation = 0; n_generation < Number_of_Generation - 1; n_generation++){
         std::cout << "世代= " << n_generation << std::endl;

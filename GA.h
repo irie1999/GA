@@ -17,7 +17,7 @@ constexpr int N_bit_parameters_h_prime { N_bit_parameter_h_prime_1 + N_bit_param
 
 constexpr double i32 { 4294967296.0 }; /* 2^32 */
 constexpr double MUTATION { 0.03 }; /* 突然変異の確率 */
-constexpr int Number_of_Individual { 5 };  /*n個体*/  /* gene * ind=400*/
+constexpr int Number_of_Individual { 15 };  /*n個体*/ 
 constexpr int Number_of_Generation { 5 };  /*n世代*/
 
 //constexpr int Max_Generation { 120 };

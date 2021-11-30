@@ -1,4 +1,5 @@
 #include <random>
+#include <fstream>
 
 #include "GA.h"
 #include "agent.h"
@@ -9,6 +10,7 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
     double v = 0.0; /*score*/
     double beta[3], h_prime[3];
     double time[3];
+    //double compare_1, compare_2, compare_3;  /*評価関数の3つの部分を比較する変数*/
     time[0] = 6.1667;
     time[1] = 6.313;
     time[2] = 6.5; 
@@ -28,9 +30,15 @@ double fitting(double parameter_beta_1, double parameter_beta_2,
 
             v += 1/ (GA_Nr * (M - 1)) * std::pow(std::abs( S[t_m][i] - s[t_m][i] ), 2);
         }
+        
             v += p_beta * std::pow(std::abs( beta[M] - beta[0]), 2) 
                  + p_h_prime * std::pow(std::abs( h_prime[M] - beta[0]), 2);
     }
+    std::ofstream ofs("../data/" "compare" + std::to_string(Number_of_Generation) + "," + std::to_string(Number_of_Individual) + ".dat");
+    ofs << "compare_1= " << v - p_beta * std::pow(std::abs( beta[M] - beta[0]), 2)  + p_h_prime * std::pow(std::abs( h_prime[M] - beta[0]), 2)
+        << std::endl << "compare_2= " << std::pow(std::abs( beta[M] - beta[0]), 2) << std::endl 
+        << "compare_3" << std::pow(std::abs( h_prime[M] - beta[0]), 2) << std::endl;
+    ofs.close();
     return v;
 }
 
