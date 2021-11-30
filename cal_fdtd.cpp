@@ -14,6 +14,7 @@
 #include <fstream>
 #include <cmath>
 #include <complex>
+#include <chrono>
 
 #include <eigen3/Eigen/Dense>
 
@@ -97,11 +98,10 @@ void cal_fdtd(double beta, double h_prime, int time, double **Ei_tm){
   double *Ls = new double [Nth + 1];
   initialize_surface_impedance(Rs, Ls);
 
+  std::chrono::system_clock::time_point start_time = std::chrono::system_clock::now();
+
   ///時間ループ///
   for(int n = 1; n <= Nt; n++){
-    // if(n % 100 == 0){
-    // std::cout << " " << n << " / " << Nt << " : " << Lp/1000 << "\n";
-    // }
 
     int NEW = (n+1) % 2;
     int OLD = n % 2;
@@ -132,13 +132,26 @@ void cal_fdtd(double beta, double h_prime, int time, double **Ei_tm){
     for(int j = 0; j <= Nth - PML_L; j++){
       Er0[j] += Er[NEW][0][j] * std::exp( -1.0 * zj * OMG * t ) * Dt;
     }
-  }
+
+    if( n % 10 == 0){
+      std::cout << " " << n << " / " << Nt << " : " << Lp/1000 << "\n";
+//      std::ofstream ofs_e("e_" + std::to_string(n) + ".dat");
+//      for(int j = 0; j <= Nth - PML_L; j++){
+//        ofs_e << j*.5 << " " << std::abs( Er0[j]) << "\n";
+//      }
+//      ofs_e.close();
+    }
+
+}
     
   for(int j = 0; j <= 2 * Nr_GA; j += 2){ /*Nr_GA=800 Nr_ini=100*/
     Ei_tm[time][j/2] = std::abs( Er0[j + 2 * Nr_ini] );
   }
     
-    
+  std::chrono::system_clock::time_point end_time = std::chrono::system_clock::now();
+  double elapsed_time = std::chrono::duration_cast <std::chrono::milliseconds> (end_time - start_time).count();
+  std::cout << elapsed_time * 1e-3 << " sec" << std::endl;
+
   
   deallocate_memory3d(Dr);
   deallocate_memory3d(Dth);
@@ -154,4 +167,5 @@ void cal_fdtd(double beta, double h_prime, int time, double **Ei_tm){
   delete [] F1;
   delete [] F;
   delete [] Er0;
+
 }

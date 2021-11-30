@@ -13,6 +13,7 @@ void update_Hr_PML(double **Hr, double **Hr1, double **Hr2,
 
   constexpr int J_OS { Nth - PML_L };
 
+#pragma omp paralell for
   for(int i = 1; i < Nr; i++){
     for(int j = Nth - PML_L; j < Nth; j++){
       Hr1[i][j - J_OS] = C1[j - J_OS] * Hr1[i][j - J_OS] -
@@ -37,6 +38,7 @@ void update_Hph_PML(double **Hph, double **Hph_r, double **Hph_th,
   const int OLD { 1 - NEW };
 
   double c1 = r(1.0)*Dt/r(0.5)/dr;
+#pragma omp paralell for
   for(int j = Nth - PML_L; j < Nth; j++){
     Bph_r[j - J_OS] = Bph_r[j - J_OS] - c1 * Eth[1][j];
     Bph_th[j - J_OS] = C1[j - J_OS] * Bph_th[j - J_OS] +
@@ -51,6 +53,7 @@ void update_Hph_PML(double **Hph, double **Hph_r, double **Hph_th,
     Hph[0][j] = ch1 * Hph[0][j] + ch2 * ( Bph[NEW][j - J_OS] - Bph[OLD][j - J_OS] );
   }
 
+#pragma omp paralell for
   for(int i = 1; i < Nr; i++){
     for(int j = Nth - PML_L; j < Nth; j++){
       Hph_r[i][j - J_OS] = Hph_r[i][j - J_OS] -

@@ -30,7 +30,7 @@ constexpr double dr { 0.5e3 };
 constexpr double Rdth { 0.5e3 };
 
 
-constexpr double Tmax { 0.00848528 };
+constexpr double Tmax { 0.00424 };
 
 constexpr double FREQ { 22.2e3 }; /* [Hz] */
 //constexpr double FREQ { 40.0e3 }; /* [Hz] */
