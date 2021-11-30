@@ -16,6 +16,7 @@ void update_Er(double ***Er, double ***Eth, double ***Eph,
     }
   }
 
+#pragma omp parallel for
   for(int i = Nr_atmo; i < Nr; i++){ //Er(i+1/2,j)
     const int i_ofs = i - Nr_atmo;
     
@@ -56,12 +57,14 @@ void update_Eth(double ***Er, double ***Eth, double ***Eph,
     const int NEW, const int OLD,
     Eigen::Matrix3d** C, Eigen::Matrix3d** F){
 
+#pragma omp parallel for
   for(int i = 1; i < Nr_atmo; i++){
     for(int j = 0; j < Nth; j++){
       Eth[NEW][i][j] = Dth[NEW][i][j] / EPS0;
     }
   }
 
+#pragma omp parallel for
   for(int i = Nr_atmo; i < Nr; i++){ //Er(i,j+1/2)
     const int i_ofs = i - Nr_atmo;
 
@@ -85,12 +88,14 @@ void update_Eph(double ***Er, double ***Eth, double ***Eph,
     const int NEW, const int OLD,
     Eigen::Matrix3d** C, Eigen::Matrix3d** F){
 
+#pragma omp parallel for
   for(int i = 1; i < Nr_atmo; i++){
     for(int j = 1; j < Nth; j++){
       Eph[NEW][i][j] = Dph[NEW][i][j] / EPS0;
     }
   }
 
+#pragma omp parallel for
   for(int i = Nr_atmo; i < Nr; i++){ //Eph(i,j)
     const int i_ofs = i - Nr_atmo;
 
