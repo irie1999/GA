@@ -6,7 +6,7 @@
 /*-----------------更新(1)-----------------*/
 void update_Dr(double ***Dr, double **Hph, const int NEW, const int OLD){
 
-#pragma omp paralell for
+#pragma omp parallel for
   for(int i = 0; i < Nr; i++){ //Dr(i+1/2,j)
     Dr[NEW][i][0] = Dr[OLD][i][0] + 4.0*Dt/r(i+0.5)/dth * Hph[i][0];
 
@@ -19,7 +19,7 @@ void update_Dr(double ***Dr, double **Hph, const int NEW, const int OLD){
 }
 
 void update_Dth(double ***Dth, double **Hph, const int NEW, const int OLD){
-#pragma omp paralell for
+#pragma omp parallel for
   for(int i = 1; i < Nr; i++){ //Dth(i,j+1/2)
     for(int j = 0; j < Nth; j++){
       Dth[NEW][i][j] = Dth[OLD][i][j] - Dt/r(i)/dr *
@@ -29,7 +29,7 @@ void update_Dth(double ***Dth, double **Hph, const int NEW, const int OLD){
 }
 
 void update_Dph(double ***Dph, double **Hr, double **Hth, const int NEW, const int OLD){
-#pragma omp paralell for
+#pragma omp parallel for
   for(int i = 1; i < Nr; i++){ //Dph(i,j)
     for(int j = 1; j < Nth - PML_L; j++){/////θ=0
       Dph[NEW][i][j] = Dph[OLD][i][j] + Dt/r(i)/dr *

@@ -11,7 +11,7 @@ void update_Dr_PML(double **Dr, double **Dr1, double **Dr2,
 
   constexpr int J_OS { Nth - PML_L }; /* Offset for sigma */
 
-#pragma omp paralell for
+#pragma omp parallel for
   for(int i = 0; i < Nr; i++){
     for(int j = Nth - PML_L; j < Nth; j++){
       Dr1[i][j - J_OS] = C1[j - J_OS] * Dr1[i][j - J_OS] +
@@ -33,7 +33,7 @@ void update_Dph_PML(double **Dph, double **Dph_r, double **Dph_th,
 
   constexpr int J_OS { Nth - PML_L }; /* Offset for sigma */
 
-#pragma omp paralell for
+#pragma omp parallel for
   for(int i = 1; i < Nr; i++){
     for(int j = Nth - PML_L; j < Nth; j++){
       Dph_r[i][j - J_OS] = Dph_r[i][j - J_OS] +

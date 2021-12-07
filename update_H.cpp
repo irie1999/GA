@@ -4,7 +4,7 @@
 
 /*-----------------更新(3)-----------------*/
 void update_Hr(double **Hr, double **Eph){
-#pragma omp paralell for
+#pragma omp parallel for
   for(int i = 1; i < Nr; i++){ //Hr(i,j+1/2)
     for(int j = 0; j < Nth - PML_L; j++){
       Hr[i][j] = Hr[i][j] -
@@ -16,7 +16,7 @@ void update_Hr(double **Hr, double **Eph){
 
 void update_Hth(double **Hth, double **Eph, double *Rs, double *Ls){
 
-#pragma omp paralell for
+#pragma omp parallel for
   for(int j = 1; j < Nth; j++){
     double c1 {
       (MU0*r(0.5)*dr - Dt*r(0.0) * (Rs[j]/2.0 - Ls[j]/Dt ) ) /
@@ -39,7 +39,7 @@ void update_Hth(double **Hth, double **Eph, double *Rs, double *Ls){
 
 void update_Hph(double **Hph, double **Er, double **Eth, double *Rs, double *Ls){
 
-#pragma omp paralell for
+#pragma omp parallel for
   for(int j = 0; j < Nth - PML_L; j++){
     double c1 {
       ( MU0 * r(0.5) * dr - Dt * r(0.0) * ((Rs[j]+Rs[j+1])/4.0 - (Ls[j]+Ls[j+1])/2.0/Dt) ) /
@@ -56,7 +56,7 @@ void update_Hph(double **Hph, double **Er, double **Eth, double *Rs, double *Ls)
 
   }
 
-#pragma omp paralell for
+#pragma omp parallel for
   for(int i = 1; i < Nr; i++){ //Hph(i+1/2,j+1/2)
     for(int j = 0; j < Nth - PML_L; j++){
       Hph[i][j] = Hph[i][j] -
